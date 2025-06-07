@@ -1,5 +1,6 @@
 import express from 'express';
 import authRoutes from './routes/auth.route.js';
+import messageRoutes from './routes/message.route.js'
 import { connectDB } from './lib/db.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
@@ -20,6 +21,9 @@ app.use(cookieParser());
 
 //routes
 app.use('/api/auth', authRoutes);
+
+//messages
+app.use('api/message',messageRoutes)
 
 //running the server
 app.listen(PORT, () => {
