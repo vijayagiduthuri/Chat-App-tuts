@@ -2,6 +2,7 @@ import express from 'express';
 import authRoutes from './routes/auth.route.js';
 import messageRoutes from './routes/message.route.js'
 import { connectDB } from './lib/db.js';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 // Load environment variables from .env file
@@ -18,6 +19,12 @@ app.use(express.json());
 
 //parse cookies
 app.use(cookieParser());
+
+// CORS configuration
+app.use(cors({
+    origin : "http://localhost:5173", // Replace with your frontend URL
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+}))
 
 //routes
 app.use('/api/auth', authRoutes);
