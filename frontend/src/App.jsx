@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import { useAuthStore } from "./store/useAuthStore.js";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   // Zustand store for authentication
@@ -17,7 +18,6 @@ const App = () => {
   useEffect(() => {
     checkAuth();
   }, [checkAuth])
-  console.log({ authUser });
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -37,6 +37,7 @@ const App = () => {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
       </Routes>
+      <Toaster/>
     </div>
   )
 }
