@@ -1,11 +1,12 @@
 import React from 'react'
 import { useState } from 'react'
-import { MessageSquare, User, Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { MessageSquare, User, Mail, Lock, Loader2, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore'
-import { Link, Links } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import AuthImagePattern from '../components/AuthImagePattern.jsx'
 import toast from 'react-hot-toast'
 
+// SignUpPage.jsx
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ const SignUpPage = () => {
   });
 
   const { signup, isSigningUp } = useAuthStore();
-
+  // Function to validate form data
   const validateForm = () => {
     if (!formData.fullName.trim()) {
       return toast.error("Full name is required");
@@ -35,6 +36,7 @@ const SignUpPage = () => {
     return true;
   }
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = validateForm();
@@ -42,7 +44,7 @@ const SignUpPage = () => {
       signup(formData);
     }
   }
-
+  // Render the sign-up page
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* left side */}
@@ -70,7 +72,7 @@ const SignUpPage = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="w-5 h-5 text-gray-500" />
+                  <User className="text-blue-500 w-6 h-6" />
                 </div>
                 <input
                   type="text"
