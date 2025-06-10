@@ -12,9 +12,21 @@ const ChatContainer = () => {
 
   const { authUser } = useAuthStore();
 
+  // Guard: only fetch messages if selectedUser exists
   useEffect(() => {
-    getMessages(selectedUser._id);
-  }, [selectedUser._id, getMessages]);
+    if (selectedUser?._id) {
+      getMessages(selectedUser._id);
+    }
+  }, [selectedUser?._id, getMessages]);
+
+  // Guard: if no selectedUser, show placeholder UI
+  if (!selectedUser) {
+    return (
+      <div className="flex-1 flex items-center justify-center text-gray-500">
+        Select a contact to start chatting
+      </div>
+    );
+  }
 
   if (isMessagesLoading) {
     return (
@@ -47,7 +59,7 @@ const ChatContainer = () => {
             </div>
             <div className='chat-header mb-1'>
               <time className='text-xs opacity-50 ml-1'>
-                {formatMessageTime}
+                {formatMessageTime(message.createdAt)}
               </time>
             </div>
             <div className="chat-bubble flex flex-col">
@@ -63,9 +75,7 @@ const ChatContainer = () => {
           </div>
         ))}
       </div>
-
       <MessageInput />
-
     </div>
   )
 }

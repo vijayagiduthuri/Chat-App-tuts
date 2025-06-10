@@ -6,7 +6,7 @@ import { Users } from "lucide-react";
 
 const Sidebar = () => {
   // Custom hooks to access chat and auth stores
-  const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
+  const { getUsers, users, selectedUser, setSelectedUser, isUserLoading } = useChatStore();
 
   const { onlineUsers } = useAuthStore()
 
@@ -15,7 +15,7 @@ const Sidebar = () => {
     getUsers();
   }, [getUsers]);
 
-  if (isUsersLoading) return <SidebarSkeleton />;
+  if (isUserLoading) return <SidebarSkeleton />;
 
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
