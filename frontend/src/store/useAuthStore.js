@@ -11,6 +11,7 @@ export const useAuthStore = create((set) => ({
     isLoggingIn: false,
     isUpdatingProfile: false,
     isCheckingAuth: true,
+    onlineUsers: [],
 
     // Action to set the authenticated user
     checkAuth: async () => {

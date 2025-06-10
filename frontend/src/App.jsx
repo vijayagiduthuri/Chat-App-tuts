@@ -10,7 +10,6 @@ import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import { useThemeStore } from "./store/useThemeStore.js";
-import ThemeDebug from "./components/ThemeDebug.jsx";
 
 const App = () => {
   // Zustand store for authentication
@@ -50,7 +49,6 @@ const App = () => {
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
       </Routes>
       <Toaster/>
-      <ThemeDebug />
     </div>
   )
 }
