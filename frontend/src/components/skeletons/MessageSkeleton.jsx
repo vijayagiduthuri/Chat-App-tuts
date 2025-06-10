@@ -1,6 +1,7 @@
 import React from 'react'
 
 const MessageSkeleton = () => {
+    //6 skeletons
     const skeletonMessages = Array(6).fill(null);
 
     return (
