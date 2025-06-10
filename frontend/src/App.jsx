@@ -9,15 +9,27 @@ import { useAuthStore } from "./store/useAuthStore.js";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
+import { useThemeStore } from "./store/useThemeStore.js";
+import ThemeDebug from "./components/ThemeDebug.jsx";
 
 const App = () => {
   // Zustand store for authentication
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
+  // Zustand store for theme
+  const {theme} = useThemeStore();
+
   // Check authentication status on component mount
   useEffect(() => {
     checkAuth();
   }, [checkAuth])
+
+  // Ensure theme is applied to document
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme])
+
+  // Theme is now handled automatically by the theme store
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -38,6 +50,7 @@ const App = () => {
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
       </Routes>
       <Toaster/>
+      <ThemeDebug />
     </div>
   )
 }
