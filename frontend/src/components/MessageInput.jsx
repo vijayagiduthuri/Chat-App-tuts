@@ -85,7 +85,7 @@ const MessageInput = () => {
           </div>
         </div>
       )}
-      
+
       <form onSubmit={handleSendMessages} className='flex items-center gap-2'>
         <div className="flex-1 flex gap-2">
           { /* Button to clear the input field */}
@@ -111,7 +111,7 @@ const MessageInput = () => {
                      ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
           >
-            <Image size={20} />
+          <Image size={20} />
           </button>
         </div>
         <button
