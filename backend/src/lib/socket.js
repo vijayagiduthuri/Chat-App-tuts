@@ -11,12 +11,32 @@ const io = new Server(server, {
     cors: {
         origin: ["http://localhost:5173"]
     }
-})
+});
 
+export function getReceiverSocketId(userId) {
+    return userScoketMap[userId];
+}
+
+//used to store online users
+const userScoketMap = {}; //{userId : socketId}
+
+
+//socket.io connection retrives
 io.on("connection", (socket) => {
     console.log("A user Connected", socket.id);
+
+    const userId = socket.handshake.query.userId
+    if (userId) {
+        userScoketMap[userId] = socket.id;
+    }
+
+    //io.emit() is used send online users to all the connected clients
+    io.emit("getOnlineUsers", Object.keys(userScoketMap));
+
     socket.on("disconnect", () => {
         console.log("A User disconnected", socket.id)
+        delete userScoketMap[userId];
+        io.emit("getOnlineUsers", Object.keys(userScoketMap));
     })
 })
 

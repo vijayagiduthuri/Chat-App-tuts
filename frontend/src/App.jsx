@@ -13,8 +13,8 @@ import { useThemeStore } from "./store/useThemeStore.js";
 
 const App = () => {
   // Zustand store for authentication
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-
+  const { authUser, checkAuth, isCheckingAuth,onlineUsers} = useAuthStore();
+  console.log({onlineUsers})
   // Zustand store for theme
   const {theme} = useThemeStore();
 
