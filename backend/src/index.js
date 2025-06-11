@@ -5,11 +5,9 @@ import { connectDB } from './lib/db.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import { app, server } from './lib/socket.js';
 // Load environment variables from .env file
 dotenv.config();
-
-// Initialize express app
-const app = express();
 
 // Set the port from environment variable or default to 9000
 const PORT = process.env.PORT || 9000;
@@ -24,7 +22,7 @@ app.use(cookieParser());
 
 // CORS configuration
 app.use(cors({
-    origin : "http://localhost:5173", // Replace with your frontend URL
+    origin: "http://localhost:5173", // Replace with your frontend URL
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 }))
 
@@ -32,11 +30,11 @@ app.use(cors({
 app.use('/api/auth', authRoutes);
 
 //messages
-app.use('/api/messages',messageRoutes)
+app.use('/api/messages', messageRoutes)
 
 //running the server
-app.listen(PORT, () => {
-    console.log('Server is running on PORT : ' +  PORT);
+server.listen(PORT, () => {
+    console.log('Server is running on PORT : ' + PORT);
     // Connect to the database
     connectDB();
 })

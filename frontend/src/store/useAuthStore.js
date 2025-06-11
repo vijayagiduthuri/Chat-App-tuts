@@ -1,9 +1,12 @@
 import { create } from 'zustand';
 import { axiosInstance } from '../lib/axios.js';
 import toast from 'react-hot-toast';
+import { io } from 'socket.io-client';
+
+const BASE_url = "http://localhost:9000";
 
 // Zustand store for managing authentication state
-export const useAuthStore = create((set) => ({
+export const useAuthStore = create((set, get) => ({
 
     // Authentication state
     authUser: null,
@@ -12,6 +15,7 @@ export const useAuthStore = create((set) => ({
     isUpdatingProfile: false,
     isCheckingAuth: true,
     onlineUsers: [],
+    socket: null,
 
     // Action to set the authenticated user
     checkAuth: async () => {
@@ -22,6 +26,7 @@ export const useAuthStore = create((set) => ({
             set({
                 authUser: res.data
             })
+            get().connectSocket();
         } catch (e) {
             set({
                 authUser: null
@@ -42,7 +47,7 @@ export const useAuthStore = create((set) => ({
             const res = await axiosInstance.post("/auth/signup", data);
             set({ authUser: res.data });
             toast.success("Account created successfully");
-
+            get().connectSocket();
         }
         catch (e) {
             toast.error(e.response?.data?.message || "Error signing up");
@@ -60,6 +65,7 @@ export const useAuthStore = create((set) => ({
             const res = await axiosInstance.post("/auth/login", data);
             set({ authUser: res.data });
             toast.success("Logged in successfully");
+            get().connectSocket();
         }
         catch (e) {
             toast.error(e.response?.data?.message || "Error logging in");
@@ -75,6 +81,7 @@ export const useAuthStore = create((set) => ({
             await axiosInstance.post("/auth/logout");
             set({ authUser: null });
             toast.success("Logged out successfully");
+            get().disconnectSocket();
         }
         catch (e) {
             toast.error(e.response?.data?.message || "Error logging out");
@@ -85,7 +92,7 @@ export const useAuthStore = create((set) => ({
     updateProfile: async (data) => {
         set({ isUpdatingProfile: true });
         try {
-            const res = await axiosInstance.put("/auth/update-profile", data );
+            const res = await axiosInstance.put("/auth/update-profile", data);
             set({ authUser: res.data });
             toast.success("Profile picture updated successfully");
         } catch (e) {
@@ -93,6 +100,21 @@ export const useAuthStore = create((set) => ({
         } finally {
             set({ isUpdatingProfile: false });
         }
+    },
+
+    //connect to the server
+    connectSocket: () => {
+        const { authUser } = get();
+        if (!authUser || get().socket?.connected) {
+            return;
+        }
+        const socket = io(BASE_url)
+        socket.connect()
+    },
+
+    //disconnect to the server
+    disconnectSocket: () => {
+
     }
 
 }))
