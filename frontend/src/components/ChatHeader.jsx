@@ -6,7 +6,6 @@ import { X } from 'lucide-react';
 const ChatHeader = () => {
     const { selectedUser, setSelectedUser } = useChatStore();
     const { onlineUsers } = useAuthStore();
-
     // 🛑 Guard clause: if no user is selected, don't render header
     if (!selectedUser) return null;
 
