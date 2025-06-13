@@ -6,6 +6,7 @@ import { MessageSquare, LogOut, Settings, User } from 'lucide-react'
 const Navbar = () => {
   // Extracting logout and authUser from the auth store
   const { logout, authUser } = useAuthStore();
+  
   return (
     // Navbar component
     <header className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 
