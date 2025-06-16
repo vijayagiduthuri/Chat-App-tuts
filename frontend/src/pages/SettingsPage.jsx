@@ -47,7 +47,7 @@ const SettingsPage = () => {
       showOnlineStatus: showOnlineStatus, // Sync with store
       showOnlineUsersOnly: showOnlineOnly // Add this to sync with store
     };
-    
+
     if (savedSettings) {
       try {
         const parsed = JSON.parse(savedSettings);
@@ -75,10 +75,10 @@ const SettingsPage = () => {
 
   // Sync settings with Zustand store on mount
   useEffect(() => {
-    setSettings(prev => ({ 
-      ...prev, 
+    setSettings(prev => ({
+      ...prev,
       showOnlineUsersOnly: showOnlineOnly,
-      showOnlineStatus: showOnlineStatus 
+      showOnlineStatus: showOnlineStatus
     }));
   }, [showOnlineOnly, showOnlineStatus]);
 
@@ -176,16 +176,16 @@ const SettingsPage = () => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
-    
+
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
-    
+
     oscillator.frequency.value = 800;
     oscillator.type = 'sine';
-    
+
     gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-    
+
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + 0.3);
   };
@@ -332,7 +332,7 @@ const SettingsPage = () => {
                   </span>
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Email Address
@@ -375,12 +375,10 @@ const SettingsPage = () => {
                   <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Your Status
                   </div>
-                  <div className={`flex items-center gap-2 ${
-                    isCurrentUserOnline ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-                  }`}>
-                    <div className={`w-3 h-3 rounded-full ${
-                      isCurrentUserOnline ? 'bg-green-500' : 'bg-red-500'
-                    }`}></div>
+                  <div className={`flex items-center gap-2 ${isCurrentUserOnline ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                    }`}>
+                    <div className={`w-3 h-3 rounded-full ${isCurrentUserOnline ? 'bg-green-500' : 'bg-red-500'
+                      }`}></div>
                     <span className="font-medium">
                       {isCurrentUserOnline ? 'Online' : 'Offline'}
                     </span>
@@ -391,9 +389,8 @@ const SettingsPage = () => {
                   <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Socket Connection
                   </div>
-                  <div className={`flex items-center gap-2 ${
-                    socket?.connected ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-                  }`}>
+                  <div className={`flex items-center gap-2 ${socket?.connected ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                    }`}>
                     {socket?.connected ? (
                       <Wifi className="w-4 h-4" />
                     ) : (
