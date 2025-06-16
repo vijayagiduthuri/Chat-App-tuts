@@ -107,7 +107,7 @@ export const useAuthStore = create((set, get) => ({
     // Connect to socket server
     connectSocket: () => {
         const { authUser, socket } = get();
-        
+
         // Don't connect if no user or already connected
         if (!authUser || socket?.connected) {
             return;
