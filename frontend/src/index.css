@@ -6,3 +6,6 @@
 [data-theme] {
   color-scheme: light dark;
 }
+.settings-item {
+  @apply flex justify-between items-center py-2 px-2 rounded-md bg-white/10 hover:bg-white/20 cursor-pointer transition;
+}

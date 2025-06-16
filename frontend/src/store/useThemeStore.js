@@ -3,29 +3,29 @@ import { create } from "zustand";
 // Get initial theme from localStorage
 const getInitialTheme = () => {
     if (typeof window !== 'undefined') {
-        const savedTheme = localStorage.getItem("chat-theme");
-        return savedTheme || "coffee";
+        // Check both possible localStorage keys for compatibility
+        const savedTheme = localStorage.getItem("theme") || localStorage.getItem("chat-theme");
+        return savedTheme || "light"; // Default to light instead of coffee
     }
-    return "coffee";
+    return "light";
 };
 
 // Apply theme to document
 const applyTheme = (theme) => {
     if (typeof document !== 'undefined') {
-        // Remove any existing theme attributes
-        const existingTheme = document.documentElement.getAttribute('data-theme');
-        if (existingTheme) {
-            document.documentElement.removeAttribute('data-theme');
-        }
-        
-        // Apply new theme
+        // Apply DaisyUI theme
         document.documentElement.setAttribute('data-theme', theme);
         
-        // Force a reflow to ensure the theme is applied
-        document.documentElement.offsetHeight;
+        // Apply Tailwind dark mode classes
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
         
         console.log('Theme applied to document:', theme);
         console.log('Document theme attribute:', document.documentElement.getAttribute('data-theme'));
+        console.log('Document classes:', document.documentElement.className);
     }
 };
 
@@ -40,10 +40,20 @@ export const useThemeStore = create((set, get) => {
         setTheme: (theme) => {
             console.log('Setting theme to:', theme);
             if (typeof window !== 'undefined') {
+                // Save to both localStorage keys for compatibility
+                localStorage.setItem("theme", theme);
                 localStorage.setItem("chat-theme", theme);
             }
             set({ theme });
             applyTheme(theme);
+        },
+        
+        // Helper method to toggle between light and dark
+        toggleTheme: () => {
+            const currentTheme = get().theme;
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            get().setTheme(newTheme);
+            return newTheme;
         }
     };
 });

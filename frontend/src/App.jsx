@@ -23,9 +23,17 @@ const App = () => {
     checkAuth();
   }, [checkAuth])
 
-  // Ensure theme is applied to document
+  // Ensure theme is applied to document (both DaisyUI and Tailwind dark mode)
   useEffect(() => {
+    // For DaisyUI themes
     document.documentElement.setAttribute('data-theme', theme);
+    
+    // For Tailwind dark mode classes
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [theme])
 
   // Theme is now handled automatically by the theme store

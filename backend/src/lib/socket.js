@@ -14,11 +14,11 @@ const io = new Server(server, {
 });
 
 export function getReceiverSocketId(userId) {
-    return userScoketMap[userId];
+    return userSocketMap[userId];
 }
 
 //used to store online users
-const userScoketMap = {}; //{userId : socketId}
+const userSocketMap = {}; //{userId : socketId}
 
 
 //socket.io connection retrives
@@ -27,16 +27,16 @@ io.on("connection", (socket) => {
 
     const userId = socket.handshake.query.userId
     if (userId) {
-        userScoketMap[userId] = socket.id;
+        userSocketMap[userId] = socket.id;
     }
 
     //io.emit() is used send online users to all the connected clients
-    io.emit("getOnlineUsers", Object.keys(userScoketMap));
+    io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
     socket.on("disconnect", () => {
         console.log("A User disconnected", socket.id)
-        delete userScoketMap[userId];
-        io.emit("getOnlineUsers", Object.keys(userScoketMap));
+        delete userSocketMap[userId];
+        io.emit("getOnlineUsers", Object.keys(userSocketMap));
     })
 })
 

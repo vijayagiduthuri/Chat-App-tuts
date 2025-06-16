@@ -91,6 +91,53 @@ export const login = async (req, res) => {
     }
 }
 
+//update password
+export const updatePassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    try {
+        // Get user ID from JWT token (assuming you have auth middleware)
+        const userId = req.user.id;
+        
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ message: "Current password and new password are required" });
+        }
+        
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: "New password must be at least 6 characters long" });
+        }
+        
+        //find user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        //check if current password is correct
+        const isCurrentPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+        if (!isCurrentPasswordCorrect) {
+            return res.status(400).json({ message: "Current password is incorrect" });
+        }
+        
+        //hash the new password
+        const saltRounds = 12;
+        const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
+        
+        //update password in database
+        await User.findByIdAndUpdate(userId, { 
+            password: hashedNewPassword,
+            updatedAt: new Date()
+        });
+        
+        res.status(200).json({
+            message: "Password updated successfully",
+            success: true
+        });
+        
+    } catch (e) {
+        console.error("Error during password update:", e.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
 
 //user logout
 export const logout = (req, res) => {
