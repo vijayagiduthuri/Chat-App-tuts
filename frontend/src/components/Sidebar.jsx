@@ -7,7 +7,13 @@ import { Users } from "lucide-react";
 const Sidebar = () => {
   // Zustand stores
   const { getUsers, users, selectedUser, setSelectedUser, isUserLoading } = useChatStore();
-  const { onlineUsers, showOnlineOnly, setShowOnlineOnly, showOnlineStatus } = useAuthStore(); // Add showOnlineStatus
+  const { 
+    onlineUsers, 
+    showOnlineOnly, 
+    setShowOnlineOnly, 
+    showOnlineStatus,
+    authUser // Add authUser to get current user
+  } = useAuthStore();
 
   // Fetch users once on mount
   useEffect(() => {
@@ -18,6 +24,9 @@ const Sidebar = () => {
   const filteredUsers = showOnlineOnly
     ? users.filter((user) => onlineUsers.includes(user._id))
     : users;
+
+  // Calculate online users count excluding current user
+  const onlineUsersCount = onlineUsers.filter(userId => userId !== authUser?._id).length;
 
   // Show loading UI
   if (isUserLoading) return <SidebarSkeleton />;
@@ -43,7 +52,9 @@ const Sidebar = () => {
               />
               <span className="text-sm">Show online only</span>
             </label>
-            <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
+            <span className="text-xs text-zinc-500">
+              ({onlineUsersCount} online)
+            </span>
           </div>
         )}
       </div>
@@ -54,8 +65,9 @@ const Sidebar = () => {
           <button
             key={user._id}
             onClick={() => setSelectedUser(user)}
-            className={`w-full p-3 flex items-center gap-3 hover:bg-base-300 transition-colors ${selectedUser?._id === user._id ? "bg-base-300 ring-1 ring-base-300" : ""
-              }`}
+            className={`w-full p-3 flex items-center gap-3 hover:bg-base-300 transition-colors ${
+              selectedUser?._id === user._id ? "bg-base-300 ring-1 ring-base-300" : ""
+            }`}
           >
             {/* Profile Image */}
             <div className="relative mx-auto lg:mx-0">
@@ -64,7 +76,7 @@ const Sidebar = () => {
                 alt={user.fullName}
                 className="size-12 object-cover rounded-full"
               />
-              {/* Only show green dot if showOnlineStatus is enabled */}
+              {/* Only show green dot if showOnlineStatus is enabled AND user is online */}
               {showOnlineStatus && onlineUsers.includes(user._id) && (
                 <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-2 ring-zinc-900" />
               )}
