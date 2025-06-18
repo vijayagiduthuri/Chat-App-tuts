@@ -535,7 +535,7 @@ const SettingsPage = () => {
                       Users Currently Online
                     </div>
                     <div className="text-sm text-blue-700 dark:text-blue-300">
-                      Active users in chat right now
+                      Active users in chat right now including you
                     </div>
                   </div>
                 </div>
