@@ -8,7 +8,7 @@ router.get('/users',protectRoute,getUserForSidebar);
 
 router.post("/send/:id",protectRoute,sendMessage)
 
-router.get("/:id",protectRoute,getMessages);
+router.get("/chat/:id",protectRoute,getMessages);
 
 
 export default router;
